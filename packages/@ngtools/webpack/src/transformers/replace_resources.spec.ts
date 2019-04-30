@@ -1,11 +1,11 @@
-import { oneLine, stripIndent } from 'common-tags';
-import { transformTypescript } from './ast_helpers';
-import { replaceResources } from './replace_resources';
+import { oneLine, stripIndent } from "common-tags";
+import { transformTypescript } from "./ast_helpers";
+import { replaceResources } from "./replace_resources";
 
-describe('@ngtools/webpack transformers', () => {
-  describe('replace_resources', () => {
-    it('should replace resources', () => {
-      const input = stripIndent`
+describe("@ngtools/webpack transformers", () => {
+    describe("replace_resources", () => {
+        it("should replace resources", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
 
         @Component({
@@ -17,7 +17,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         import * as tslib_1 from "tslib";
         import { Component } from '@angular/core';
         let AppComponent = class AppComponent {
@@ -35,14 +35,14 @@ describe('@ngtools/webpack transformers', () => {
         export { AppComponent };
       `;
 
-      const transformer = replaceResources(() => true);
-      const result = transformTypescript(input, [transformer]);
+            const transformer = replaceResources(() => true);
+            const result = transformTypescript(input, [transformer]);
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should replace resources with backticks', () => {
-      const input = stripIndent`
+        it("should replace resources with backticks", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
 
         @Component({
@@ -54,7 +54,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         import * as tslib_1 from "tslib";
         import { Component } from '@angular/core';
         let AppComponent = class AppComponent {
@@ -72,14 +72,14 @@ describe('@ngtools/webpack transformers', () => {
         export { AppComponent };
       `;
 
-      const transformer = replaceResources(() => true);
-      const result = transformTypescript(input, [transformer]);
+            const transformer = replaceResources(() => true);
+            const result = transformTypescript(input, [transformer]);
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should not replace resources if shouldTransform returns false', () => {
-      const input = stripIndent`
+        it("should not replace resources if shouldTransform returns false", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
 
         @Component({
@@ -91,7 +91,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = `
+            const output = `
         import * as tslib_1 from "tslib";
         import { Component } from '@angular/core';
         let AppComponent = class AppComponent {
@@ -109,10 +109,10 @@ describe('@ngtools/webpack transformers', () => {
         export { AppComponent };
       `;
 
-      const transformer = replaceResources(() => false);
-      const result = transformTypescript(input, [transformer]);
+            const transformer = replaceResources(() => false);
+            const result = transformTypescript(input, [transformer]);
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
     });
-  });
 });

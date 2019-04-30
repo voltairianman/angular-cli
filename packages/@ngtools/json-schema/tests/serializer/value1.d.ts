@@ -4,8 +4,8 @@ interface _ {
     stringKey?: string;
     booleanKey?: boolean;
     numberKey?: number;
-    oneOfKey1?: (string | number);
-    oneOfKey2?: (string | string[]);
+    oneOfKey1?: string | number;
+    oneOfKey2?: string | string[];
     objectKey1?: {
         stringKey?: string;
         objectKey?: {

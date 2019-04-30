@@ -1,9 +1,12 @@
-import { ng } from '../../utils/process';
-import { writeFile } from '../../utils/fs';
+import { ng } from "../../utils/process";
+import { writeFile } from "../../utils/fs";
 
-export default function () {
-  // Tests run in 'dev' environment by default.
-  return writeFile('src/app/environment.spec.ts', `
+export default function() {
+    // Tests run in 'dev' environment by default.
+    return (
+        writeFile(
+            "src/app/environment.spec.ts",
+            `
       import { environment } from '../environments/environment';
 
       describe('Test environment', () => {
@@ -11,11 +14,15 @@ export default function () {
           expect(environment.production).toBe(false);
         });
       });
-    `)
-    .then(() => ng('test', '--single-run'))
+    `
+        )
+            .then(() => ng("test", "--single-run"))
 
-    // Tests can run in different environment.
-    .then(() => writeFile('src/app/environment.spec.ts', `
+            // Tests can run in different environment.
+            .then(() =>
+                writeFile(
+                    "src/app/environment.spec.ts",
+                    `
       import { environment } from '../environments/environment';
 
       describe('Test environment', () => {
@@ -23,6 +30,9 @@ export default function () {
           expect(environment.production).toBe(true);
         });
       });
-    `))
-    .then(() => ng('test', '-e', 'prod', '--single-run'));
+    `
+                )
+            )
+            .then(() => ng("test", "-e", "prod", "--single-run"))
+    );
 }

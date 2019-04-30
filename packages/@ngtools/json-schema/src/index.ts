@@ -1,1 +1,1 @@
-export {SchemaClass, SchemaClassFactory} from './schema-class-factory';
+export { SchemaClass, SchemaClassFactory } from "./schema-class-factory";

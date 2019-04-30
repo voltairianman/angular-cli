@@ -1,34 +1,36 @@
 import {
-  killAllProcesses,
-  waitForAnyProcessOutputToMatch,
-  execAndWaitForOutputToMatch,
-} from '../../utils/process';
-import { writeFile, prependToFile } from '../../utils/fs';
-import {getGlobalVariable} from '../../utils/env';
-
+    killAllProcesses,
+    waitForAnyProcessOutputToMatch,
+    execAndWaitForOutputToMatch,
+} from "../../utils/process";
+import { writeFile, prependToFile } from "../../utils/fs";
+import { getGlobalVariable } from "../../utils/env";
 
 const successRe = /webpack: Compiled successfully/;
 
 export default async function() {
-  if (process.platform.startsWith('win')) {
-    return;
-  }
-  // Skip this in ejected tests.
-  if (getGlobalVariable('argv').eject) {
-    return;
-  }
+    if (process.platform.startsWith("win")) {
+        return;
+    }
+    // Skip this in ejected tests.
+    if (getGlobalVariable("argv").eject) {
+        return;
+    }
 
-  await writeFile('src/app/type.ts', `export type MyType = number;`);
-  await prependToFile('src/app/app.component.ts', 'import { MyType } from "./type";\n');
+    await writeFile("src/app/type.ts", `export type MyType = number;`);
+    await prependToFile(
+        "src/app/app.component.ts",
+        "import { MyType } from './type';\n"
+    );
 
-  try {
-    await execAndWaitForOutputToMatch('ng', ['serve'], successRe);
+    try {
+        await execAndWaitForOutputToMatch("ng", ["serve"], successRe);
 
-    await Promise.all([
-      waitForAnyProcessOutputToMatch(successRe, 20000),
-      writeFile('src/app/type.ts', `export type MyType = string;`),
-    ]);
-  } finally {
-    killAllProcesses();
-  }
+        await Promise.all([
+            waitForAnyProcessOutputToMatch(successRe, 20000),
+            writeFile("src/app/type.ts", `export type MyType = string;`),
+        ]);
+    } finally {
+        killAllProcesses();
+    }
 }

@@ -1,9 +1,9 @@
-import { NamedModulesPlugin } from 'webpack';
+import { NamedModulesPlugin } from "webpack";
 
-import { WebpackConfigOptions } from '../webpack-config';
+import { WebpackConfigOptions } from "../webpack-config";
 
 export function getDevConfig(_wco: WebpackConfigOptions) {
-  return {
-    plugins: [new NamedModulesPlugin()]
-  };
+    return {
+        plugins: [new NamedModulesPlugin()],
+    };
 }
