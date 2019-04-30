@@ -16,7 +16,7 @@ const VersionCommand = Command.extend({
   availableOptions: [],
 
   run: function (_options: any) {
-    let versions: { [name: string]: string } = {};
+let versions: { [name: string]: string } = {};
     let angular: { [name: string]: string } = {};
     let angularCoreVersion = '';
     let angularSameAsCore: string[] = [];
