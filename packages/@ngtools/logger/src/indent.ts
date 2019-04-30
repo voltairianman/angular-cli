@@ -1,6 +1,5 @@
-import { map } from 'rxjs/operators';
-import {Logger} from './logger';
-
+import { map } from "rxjs/operators";
+import { Logger } from "./logger";
 
 /**
  * Keep an map of indentation => array of indentations based on the level.
@@ -9,28 +8,35 @@ import {Logger} from './logger';
  * loggers. Also, string concatenation is expensive so performing concats for every log entries
  * is expensive; this alleviates it.
  */
-const indentationMap: {[indentationType: string]: string[]} = {};
-
+const indentationMap: {
+    [indentationType: string]: string[];
+} = {};
 
 export class IndentLogger extends Logger {
-  constructor(name: string, parent: Logger | null = null, indentation = '  ') {
-    super(name, parent);
+    constructor(
+        name: string,
+        parent: Logger | null = null,
+        indentation = "  "
+    ) {
+        super(name, parent);
 
-    indentationMap[indentation] = indentationMap[indentation] || [''];
-    const indentMap = indentationMap[indentation];
+        indentationMap[indentation] = indentationMap[indentation] || [""];
+        const indentMap = indentationMap[indentation];
 
-    this._observable = this._observable.pipe(map(entry => {
-      const l = entry.path.length;
-      if (l >= indentMap.length) {
-        let current = indentMap[indentMap.length - 1];
-        while (l >= indentMap.length) {
-          current += indentation;
-          indentMap.push(current);
-        }
-      }
+        this._observable = this._observable.pipe(
+            map(entry => {
+                const l = entry.path.length;
+                if (l >= indentMap.length) {
+                    let current = indentMap[indentMap.length - 1];
+                    while (l >= indentMap.length) {
+                        current += indentation;
+                        indentMap.push(current);
+                    }
+                }
 
-      entry.message = indentMap[l] + entry.message;
-      return entry;
-    }));
-  }
+                entry.message = indentMap[l] + entry.message;
+                return entry;
+            })
+        );
+    }
 }

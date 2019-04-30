@@ -1,14 +1,20 @@
-import {join} from 'path';
-import {ng} from '../../../utils/process';
-import {expectFileToMatch} from '../../../utils/fs';
-
+import { join } from "path";
+import { ng } from "../../../utils/process";
+import { expectFileToMatch } from "../../../utils/fs";
 
 export default function() {
-  const modulePath = join('src', 'app', 'app.module.ts');
+    const modulePath = join("src", "app", "app.module.ts");
 
-  return ng('generate', 'directive', 'test-directive', '--export')
-    .then(() => expectFileToMatch(modulePath, 'exports: [TestDirectiveDirective]'))
+    return (
+        ng("generate", "directive", "test-directive", "--export")
+            .then(() =>
+                expectFileToMatch(
+                    modulePath,
+                    "exports: [TestDirectiveDirective]"
+                )
+            )
 
-    // Try to run the unit tests.
-    .then(() => ng('test', '--single-run'));
+            // Try to run the unit tests.
+            .then(() => ng("test", "--single-run"))
+    );
 }

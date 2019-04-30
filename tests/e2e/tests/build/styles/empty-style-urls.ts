@@ -1,13 +1,13 @@
-import { writeMultipleFiles } from '../../../utils/fs';
-import { ng } from '../../../utils/process';
+import { writeMultipleFiles } from "../../../utils/fs";
+import { ng } from "../../../utils/process";
 
-
-export default function () {
-
-  return Promise.resolve()
-    // Write assets.
-    .then(_ => writeMultipleFiles({
-      './src/app/app.component.ts': `
+export default function() {
+    return (
+        Promise.resolve()
+            // Write assets.
+            .then(_ =>
+                writeMultipleFiles({
+                    "./src/app/app.component.ts": `
         import { Component } from '@angular/core';
 
         @Component({
@@ -18,7 +18,9 @@ export default function () {
         export class AppComponent {
           title = 'app';
         }
-      `
-    }))
-    .then(() => ng('build'));
+      `,
+                })
+            )
+            .then(() => ng("build"))
+    );
 }

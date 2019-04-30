@@ -1,11 +1,11 @@
-import { oneLine, stripIndent } from 'common-tags';
-import { createTypescriptContext, transformTypescript } from './ast_helpers';
-import { removeDecorators } from './remove_decorators';
+import { oneLine, stripIndent } from "common-tags";
+import { createTypescriptContext, transformTypescript } from "./ast_helpers";
+import { removeDecorators } from "./remove_decorators";
 
-describe('@ngtools/webpack transformers', () => {
-  describe('decorator_remover', () => {
-    it('should remove Angular decorators', () => {
-      const input = stripIndent`
+describe("@ngtools/webpack transformers", () => {
+    describe("decorator_remover", () => {
+        it("should remove Angular decorators", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
 
         @Component({
@@ -17,7 +17,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         export class AppComponent {
           constructor() {
             this.title = 'app';
@@ -25,18 +25,23 @@ describe('@ngtools/webpack transformers', () => {
         }
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should not remove non-Angular decorators', () => {
-      const input = stripIndent`
+        it("should not remove non-Angular decorators", () => {
+            const input = stripIndent`
         import { Component } from 'another-lib';
 
         @Component({
@@ -48,7 +53,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = `
+            const output = `
         import * as tslib_1 from "tslib";
         import { Component } from 'another-lib';
         let AppComponent = class AppComponent {
@@ -66,18 +71,23 @@ describe('@ngtools/webpack transformers', () => {
         export { AppComponent };
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should keep other decorators on class member', () => {
-      const input = stripIndent`
+        it("should keep other decorators on class member", () => {
+            const input = stripIndent`
         import { Component, HostListener } from '@angular/core';
         import { AnotherDecorator } from 'another-lib';
 
@@ -96,7 +106,7 @@ describe('@ngtools/webpack transformers', () => {
           }
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         import * as tslib_1 from "tslib";
         import { AnotherDecorator } from 'another-lib';
 
@@ -114,18 +124,23 @@ describe('@ngtools/webpack transformers', () => {
         ], AppComponent.prototype, "onEscape", null);
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should keep other decorators on class declaration', () => {
-      const input = stripIndent`
+        it("should keep other decorators on class declaration", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
         import { AnotherDecorator } from 'another-lib';
 
@@ -139,7 +154,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         import * as tslib_1 from "tslib";
         import { AnotherDecorator } from 'another-lib';
 
@@ -154,18 +169,23 @@ describe('@ngtools/webpack transformers', () => {
         export { AppComponent };
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should remove imports for identifiers within the decorator', () => {
-      const input = stripIndent`
+        it("should remove imports for identifiers within the decorator", () => {
+            const input = stripIndent`
         import { Component } from '@angular/core';
         import { ChangeDetectionStrategy } from '@angular/core';
 
@@ -179,7 +199,7 @@ describe('@ngtools/webpack transformers', () => {
           title = 'app';
         }
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         export class AppComponent {
           constructor() {
             this.title = 'app';
@@ -187,18 +207,23 @@ describe('@ngtools/webpack transformers', () => {
         }
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
-    });
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
 
-    it('should not remove imports from types that are still used', () => {
-      const input = stripIndent`
+        it("should not remove imports from types that are still used", () => {
+            const input = stripIndent`
         import { Component, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
         import { abc } from 'xyz';
 
@@ -216,7 +241,7 @@ describe('@ngtools/webpack transformers', () => {
 
         export { ChangeDetectionStrategy };
       `;
-      const output = stripIndent`
+            const output = stripIndent`
         import { ChangeDetectionStrategy, EventEmitter } from '@angular/core';
         import { abc } from 'xyz';
 
@@ -231,14 +256,19 @@ describe('@ngtools/webpack transformers', () => {
         export { ChangeDetectionStrategy };
       `;
 
-      const { program, compilerHost } = createTypescriptContext(input);
-      const transformer = removeDecorators(
-        () => true,
-        () => program.getTypeChecker(),
-      );
-      const result = transformTypescript(undefined, [transformer], program, compilerHost);
+            const { program, compilerHost } = createTypescriptContext(input);
+            const transformer = removeDecorators(
+                () => true,
+                () => program.getTypeChecker()
+            );
+            const result = transformTypescript(
+                undefined,
+                [transformer],
+                program,
+                compilerHost
+            );
 
-      expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+            expect(oneLine`${result}`).toEqual(oneLine`${output}`);
+        });
     });
-  });
 });

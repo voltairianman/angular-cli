@@ -1,84 +1,103 @@
-import { Stats } from 'fs';
+import { Stats } from "fs";
 
 // Declarations for (some) Webpack types. Only what's needed.
 
 export interface Request {
-  request?: Request;
-  relativePath: string;
+    request?: Request;
+    relativePath: string;
 }
 
 export interface Callback<T> {
-  (err?: Error | null, result?: T): void;
+    (err?: Error | null, result?: T): void;
 }
 
 export interface ResolverCallback {
-  (request: Request, callback: Callback<void>): void;
+    (request: Request, callback: Callback<void>): void;
 }
 
 export interface Tapable {
-  apply(plugin: ResolverPlugin): void;
+    apply(plugin: ResolverPlugin): void;
 }
 
 export interface ResolverPlugin extends Tapable {
-  plugin(source: string, cb: ResolverCallback): void;
-  doResolve(target: string, req: Request, desc: string, callback: Callback<any>): void;
-  join(relativePath: string, innerRequest: Request): Request;
+    plugin(source: string, cb: ResolverCallback): void;
+    doResolve(
+        target: string,
+        req: Request,
+        desc: string,
+        callback: Callback<any>
+    ): void;
+    join(relativePath: string, innerRequest: Request): Request;
 }
 
 export interface LoaderCallback {
-  (err: Error | null, source?: string, sourceMap?: string): void;
+    (err: Error | null, source?: string, sourceMap?: string): void;
 }
 
 export interface ModuleReason {
-  dependency: any;
-  module: NormalModule;
+    dependency: any;
+    module: NormalModule;
 }
 
 export interface NormalModule {
-  buildTimestamp: number;
-  built: boolean;
-  reasons: ModuleReason[];
-  resource: string;
+    buildTimestamp: number;
+    built: boolean;
+    reasons: ModuleReason[];
+    resource: string;
 }
 
 export interface NormalModuleFactory {
-  plugin(event: string,
-         callback: (data: NormalModuleFactoryRequest, callback: Callback<any>) => void): any;
+    plugin(
+        event: string,
+        callback: (
+            data: NormalModuleFactoryRequest,
+            callback: Callback<any>
+        ) => void
+    ): any;
 }
 
 export interface NormalModuleFactoryRequest {
-  request: string;
-  contextInfo: { issuer: string };
+    request: string;
+    contextInfo: {
+        issuer: string;
+    };
 }
 
 export interface LoaderContext {
-  _module: NormalModule;
+    _module: NormalModule;
 
-  addDependency(path: string): void;
-  async(): LoaderCallback;
-  cacheable(): void;
+    addDependency(path: string): void;
+    async(): LoaderCallback;
+    cacheable(): void;
 
-  readonly resourcePath: string;
-  readonly query: any;
+    readonly resourcePath: string;
+    readonly query: any;
 }
 
 export interface InputFileSystem {
-  stat(path: string, callback: Callback<any>): void;
-  readdir(path: string, callback: Callback<any>): void;
-  readFile(path: string, callback: Callback<any>): void;
-  readJson(path: string, callback: Callback<any>): void;
-  readlink(path: string, callback: Callback<any>): void;
-  statSync(path: string): Stats;
-  readdirSync(path: string): string[];
-  readFileSync(path: string): string;
-  readJsonSync(path: string): string;
-  readlinkSync(path: string): string;
-  purge(changes?: string[] | string): void;
+    stat(path: string, callback: Callback<any>): void;
+    readdir(path: string, callback: Callback<any>): void;
+    readFile(path: string, callback: Callback<any>): void;
+    readJson(path: string, callback: Callback<any>): void;
+    readlink(path: string, callback: Callback<any>): void;
+    statSync(path: string): Stats;
+    readdirSync(path: string): string[];
+    readFileSync(path: string): string;
+    readJsonSync(path: string): string;
+    readlinkSync(path: string): string;
+    purge(changes?: string[] | string): void;
 }
 
 export interface NodeWatchFileSystemInterface {
-  inputFileSystem: InputFileSystem;
-  new(inputFileSystem: InputFileSystem): NodeWatchFileSystemInterface;
-  watch(files: any, dirs: any, missing: any, startTime: any, options: any, callback: any,
-    callbackUndelayed: any): any;
+    inputFileSystem: InputFileSystem;
+    new (inputFileSystem: InputFileSystem): NodeWatchFileSystemInterface;
+    watch(
+        files: any,
+        dirs: any,
+        missing: any,
+        startTime: any,
+        options: any,
+        callback: any,
+        callbackUndelayed: any
+    ): any;
 }
