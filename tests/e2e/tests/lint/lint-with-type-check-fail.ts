@@ -1,11 +1,10 @@
-import { ng } from '../../utils/process';
-import { expectToFail } from '../../utils/utils';
-import { writeFile } from '../../utils/fs';
+import { ng } from "../../utils/process";
+import { expectToFail } from "../../utils/utils";
+import { writeFile } from "../../utils/fs";
 
-
-export default function () {
-  const fileName = 'src/app/foo.ts';
-  const fileContents = `
+export default function() {
+    const fileName = "src/app/foo.ts";
+    const fileContents = `
 const ANIMATION_CSS_VALUE_REGEX = 'asda';
 const a = ["asda", 'asda', 'asdasd', "ASDASDAS"];
 const b = "asdasd";
@@ -34,7 +33,7 @@ function check(val: any, fxState: any) {
 
   `;
 
-  return Promise.resolve()
-    .then(() => writeFile(fileName, fileContents))
-    .then(() => expectToFail(() => ng('lint', '--fix', '--type-check')));
+    return Promise.resolve()
+        .then(() => writeFile(fileName, fileContents))
+        .then(() => expectToFail(() => ng("lint", "--fix", "--type-check")));
 }

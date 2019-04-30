@@ -1,14 +1,17 @@
-import {join} from 'path';
-import {ng} from '../../../utils/process';
-import {expectFileToMatch} from '../../../utils/fs';
-
+import { join } from "path";
+import { ng } from "../../../utils/process";
+import { expectFileToMatch } from "../../../utils/fs";
 
 export default function() {
-  const modulePath = join('src', 'app', 'app.module.ts');
+    const modulePath = join("src", "app", "app.module.ts");
 
-  return ng('generate', 'pipe', 'test-pipe', '--export')
-    .then(() => expectFileToMatch(modulePath, 'exports: [TestPipePipe]'))
+    return (
+        ng("generate", "pipe", "test-pipe", "--export")
+            .then(() =>
+                expectFileToMatch(modulePath, "exports: [TestPipePipe]")
+            )
 
-    // Try to run the unit tests.
-    .then(() => ng('test', '--single-run'));
+            // Try to run the unit tests.
+            .then(() => ng("test", "--single-run"))
+    );
 }

@@ -12,7 +12,7 @@ interface _ {
     apps?: {
         root?: string;
         outDir?: string;
-        assets?: (string | string[]);
+        assets?: string | string[];
         deployUrl?: string;
         index?: string;
         main?: string;
@@ -22,17 +22,21 @@ interface _ {
         /**
          * Global styles to be included in the build.
          */
-        styles?: (string | {
-            input?: string;
-            [name: string]: any;
-        })[];
+        styles?: (
+            | string
+            | {
+                  input?: string;
+                  [name: string]: any;
+              })[];
         /**
          * Global scripts to be included in the build.
          */
-        scripts?: (string | {
-            input: string;
-            [name: string]: any;
-        })[];
+        scripts?: (
+            | string
+            | {
+                  input: string;
+                  [name: string]: any;
+              })[];
         /**
          * Name and corresponding file for environment config.
          */
